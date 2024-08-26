@@ -1,0 +1,98 @@
+WITH matched_workflows AS
+(
+    SELECT
+      w.id,
+      w.name,
+      w.campaign_id,
+      w.system_workflow,
+      ROW_NUMBER() OVER(ORDER BY w.system_workflow, w.campaign_id DESC, GREATEST(wr.created_at, w.updated_at) DESC) AS ranking
+    FROM bar.workflow AS w,
+      bar.workflow_rule AS wr
+    WHERE w.id = wr.workflow_id
+      AND w.status = 'ACTIVE'
+      AND (w.campaign_id = 1 OR w.campaign_id = 0)
+      AND w.trigger_type_id = 1
+      AND w.system_workflow = 0 
+
+      AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.BLOCK_LISTED__EQ')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.BLOCK_LISTED__EQ') AND wr.rules->'$.BLOCK_LISTED__EQ' = NULL)
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.BRAND_FLAGGED_FRAUD__EQ')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.BRAND_FLAGGED_FRAUD__EQ') AND wr.rules->'$.BRAND_FLAGGED_FRAUD__EQ' = NULL)
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.PAST_RELATIONSHIP__EQ')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.PAST_RELATIONSHIP__EQ') AND wr.rules->'$.PAST_RELATIONSHIP__EQ' = NULL)
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.NUM_PAYOUTS__GT')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.NUM_PAYOUTS__GT') AND wr.rules->'$.NUM_PAYOUTS__GT' < NULL)
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.PARTNER_COUNTRY__HAS_ANY_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.PARTNER_COUNTRY__HAS_ANY_OF') AND (JSON_CONTAINS(wr.rules->>'$.PARTNER_COUNTRY__HAS_ANY_OF', '"NULL"')))
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.PARTNER_COUNTRY__HAS_NONE_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.PARTNER_COUNTRY__HAS_NONE_OF') AND NOT JSON_OVERLAPS(wr.rules->>'$.PARTNER_COUNTRY__HAS_NONE_OF', '["NULL"]'))
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.PARTNER_SIZE__HAS_ANY_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.PARTNER_SIZE__HAS_ANY_OF') AND (JSON_CONTAINS(wr.rules->>'$.PARTNER_SIZE__HAS_ANY_OF', '"NULL"')))
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.PARTNER_SIZE__HAS_NONE_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.PARTNER_SIZE__HAS_NONE_OF') AND NOT JSON_OVERLAPS(wr.rules->>'$.PARTNER_SIZE__HAS_NONE_OF', '["XS","S","M","L","XL"]'))
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.PARTNER_STATE__HAS_ANY_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.PARTNER_STATE__HAS_ANY_OF') AND (JSON_CONTAINS(wr.rules->>'$.PARTNER_STATE__HAS_ANY_OF', '"NULL"')))
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.PARTNER_STATE__HAS_NONE_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.PARTNER_STATE__HAS_NONE_OF') AND NOT JSON_OVERLAPS(wr.rules->>'$.PARTNER_STATE__HAS_NONE_OF', '["NULL"]'))
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.PRIMARY_BUSINESS_MODEL__HAS_ANY_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.PRIMARY_BUSINESS_MODEL__HAS_ANY_OF') AND (JSON_CONTAINS(wr.rules->>'$.PRIMARY_BUSINESS_MODEL__HAS_ANY_OF', '"DEAL_COUPON"')))
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.PRIMARY_BUSINESS_MODEL__HAS_NONE_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.PRIMARY_BUSINESS_MODEL__HAS_NONE_OF') AND NOT JSON_OVERLAPS(wr.rules->>'$.PRIMARY_BUSINESS_MODEL__HAS_NONE_OF', '["DEAL_COUPON"]'))
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.MEDIA_PROPERTY__HAS_ALL_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.MEDIA_PROPERTY__HAS_ALL_OF') AND JSON_CONTAINS('["NULL"]', wr.rules->>'$.MEDIA_PROPERTY__HAS_ALL_OF'))
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.MEDIA_PROPERTY__HAS_ANY_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.MEDIA_PROPERTY__HAS_ANY_OF') AND (JSON_CONTAINS(wr.rules->>'$.MEDIA_PROPERTY__HAS_ANY_OF', '"NULL"')))
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.MEDIA_PROPERTY__HAS_NONE_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.MEDIA_PROPERTY__HAS_NONE_OF') AND NOT JSON_OVERLAPS(wr.rules->>'$.MEDIA_PROPERTY__HAS_NONE_OF', '["NULL"]'))
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.QUALIFIED_TO_PAY__EQ')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.QUALIFIED_TO_PAY__EQ') AND wr.rules->'$.QUALIFIED_TO_PAY__EQ' = NULL)
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.TEMPLATE_TERMS__HAS_ANY_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.TEMPLATE_TERMS__HAS_ANY_OF') AND (JSON_CONTAINS(wr.rules->>'$.TEMPLATE_TERMS__HAS_ANY_OF', '"NULL"')))
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.MARKETPLACE_STATUS__EQ')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.MARKETPLACE_STATUS__EQ') AND wr.rules->'$.MARKETPLACE_STATUS__EQ' = NULL)
+)
+AND (
+   (NOT JSON_CONTAINS_PATH(wr.rules, 'one', '$.PRODUCT_EDITION__HAS_ANY_OF')) 
+   OR (JSON_CONTAINS_PATH(wr.rules, 'one', '$.PRODUCT_EDITION__HAS_ANY_OF') AND (JSON_CONTAINS(wr.rules->>'$.PRODUCT_EDITION__HAS_ANY_OF', '"NULL"')))
+)
+)
+SELECT
+  JSON_OBJECT('id', id, 'campaignId', campaign_id, 'systemWorkflow', system_workflow) AS workflow
+FROM matched_workflows
+WHERE ranking = 1
+  AND bar.feature_enabled('BRAND_EVALUATE_SINGLE_PARTNER')

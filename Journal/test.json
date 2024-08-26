@@ -1,0 +1,106 @@
+[
+  {
+    "rsi": "1ee3c528-2769-6bc3-9c29-df65ea9acb0c",
+    "relatedProgram": {
+      "extended_searchPartnerId": "testPartnerExtendedSearch5",
+      "addresses": [],
+      "psi": "1ee3c528-14c9-6ac6-9b07-a52f7be9f02f",
+      "totalAudienceSize": null,
+      "mediaProperties": [
+        {
+          "screenshotUrl": null,
+          "msi": "1ee15d2f-0b3e-6203-b105-b7f135993401",
+          "website": {
+            "mozDomainAuthority": null,
+            "mozRankRootDomain": null,
+            "mozSpamScore": null,
+            "mozTrustRootDomain": null
+          },
+          "deleted": false,
+          "canonicalUrl": null,
+          "social": null,
+          "isPrimary": true,
+          "language": null,
+          "type": {
+            "displayName": "Website",
+            "type": "website",
+            "category": "website"
+          },
+          "platformName": "extended_search",
+          "url": "https://qa.irqualityassurance.com/home.html"
+        }
+      ],
+      "description": "This is a test partner from extended search for testing",
+      "marketplaceLaunchDate": null,
+      "platforms": [
+        {
+          "joinDate": null,
+          "platformProgramId": "testPartnerExtendedSearch5",
+          "platformId": "2c0c8710-4be4-11ed-bcc3-0242ac120002",
+          "launchDate": null,
+          "platformName": "extended_search"
+        }
+      ],
+      "sizeRating": null,
+      "audiences": [],
+      "links": [],
+      "categories": [],
+      "promotionalMethods": [],
+      "programType": "partner",
+      "languages": [],
+      "idealPartnerDescription": null,
+      "proposalResponseRate7Day": null,
+      "shortDescription": null,
+      "dlu": "2023-08-16 16:32:34.000000",
+      "logoImageUrl": null,
+      "deleted": false,
+      "doNotPay": false,
+      "programSubtypes": [
+        "AFFILIATE",
+        "CREATOR"
+      ],
+      "csi": null,
+      "name": "Test Partner Extended Search 5",
+      "attributes": [
+        {
+          "sourceAttributeId": null,
+          "type": "privacy_level",
+          "value": "UNCLAIMED",
+          "sourcePlatformId": "1ebcb0db-8493-6174-86ba-efbb9bf02b31",
+          "sourcePlatformName": "impact"
+        }
+      ],
+      "doe": "2023-08-16 16:32:34.000000",
+      "marketplaceState": null,
+      "contacts": [
+        {
+          "lastName": "User",
+          "country": null,
+          "doNotContact": false,
+          "contactType": {
+            "id": 5,
+            "type": "MARKETPLACE"
+          },
+          "language": null,
+          "linkedIn": null,
+          "platformId": "2c0c8710-4be4-11ed-bcc3-0242ac120002",
+          "title": null,
+          "isAgencyContact": false,
+          "platformContactId": null,
+          "firstName": "QA",
+          "communications": null,
+          "deleted": null,
+          "phone": null,
+          "person": null,
+          "isPrimary": true,
+          "displayInMarketplace": false,
+          "department": null,
+          "platformName": "extended_search",
+          "profileImageUrl": null,
+          "email": "dude_wheresmycar1@outlook.com"
+        }
+      ],
+      "proposalAcceptRate7Day": null
+    }
+  }
+]
